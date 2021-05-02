@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import UsersAccordion from "./components/UsersAccordion"
+import SearchUser from "./components/SearchUsers"
+import {useDebounce} from "use-debounce"
+import {useState} from "react"
+import Container from "@material-ui/core/Container"
+import isEmpty from 'lodash.isempty'
 
-function App() {
+const App = () => {
+  const [ searchInput, setSearchInput ] = useState()
+  const [ debouncedSearchTerm ] = useDebounce(searchInput, 500)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Container maxWidth='sm' className='mb5'>
+      <SearchUser {...{ setSearchInput }} />
+      {!isEmpty(debouncedSearchTerm) && <UsersAccordion {...{ debouncedSearchTerm }} />}
+    </Container>
+  )
 }
 
-export default App;
+export default App
